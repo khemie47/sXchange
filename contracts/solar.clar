@@ -181,3 +181,50 @@
             (map-delete certified-producers producer)
             (ok true))))
 
+;; Read-only functions
+
+;; Check if a producer is certified
+(define-read-only (is-certified (producer principal))
+    (ok (default-to false (map-get? certified-producers producer))))
+
+;; Get producer data including revocation history
+(define-read-only (get-producer-data (producer principal))
+    (ok (default-to
+        {
+            total-production: u0,
+            last-certification-date: u0,
+            energy-source: "",
+            certification-status: false,
+            revocation-reason: none,
+            revocation-date: none,
+            revoked-by: none
+        }
+        (map-get? producer-energy-data producer))))
+
+;; Get certification fee
+(define-read-only (get-certification-fee)
+    (ok (var-get certification-fee)))
+
+;; Set certification fee (only contract owner)
+(define-public (set-certification-fee (new-fee uint))
+    (begin
+        (asserts! (is-eq tx-sender contract-owner) err-owner-only)
+        ;; Validate new fee amount
+        (asserts! (and 
+            (> new-fee u0)
+            (<= new-fee (var-get max-fee))
+        ) err-invalid-fee)
+        (var-set certification-fee new-fee)
+        (ok true)))
+
+;; Set minimum production requirement (only contract owner)
+(define-public (set-minimum-production (new-minimum uint))
+    (begin
+        (asserts! (is-eq tx-sender contract-owner) err-owner-only)
+        ;; Validate new minimum amount
+        (asserts! (and 
+            (> new-minimum u0)
+            (<= new-minimum (var-get max-production))
+        ) err-invalid-minimum)
+        (var-set minimum-production new-minimum)
+        (ok true)))
