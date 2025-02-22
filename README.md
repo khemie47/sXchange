@@ -1,7 +1,7 @@
 # Energy Production Certification Smart Contract
 
 ## Overview
-This smart contract implements a decentralized energy production certification system that works in conjunction with WattConnect. The contract enables authorized certifiers to verify and certify energy production claims from producers, maintain certification records, and manage the certification process.
+This smart contract implements a decentralized energy production certification system. The contract enables authorized certifiers to verify and certify energy production claims from producers, maintain certification records, and manage the certification process.
 
 ## Features
 - Energy production certification and verification
@@ -104,4 +104,3 @@ This smart contract implements a decentralized energy production certification s
 ## Development Requirements
 - Clarity smart contract language
 - Stacks blockchain environment
-- WattConnect integration capabilities
